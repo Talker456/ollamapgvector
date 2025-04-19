@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+        <meta name="_csrf" th:content="${_csrf.token}">
+        <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chat</title>
+</head>
+<body>
+<h1>Chat with AI</h1>
+<div id="messages"></div>
+
+    <input type="text" id="message" placeholder="Type your message" />
+    <button onclick="fetchData2()">Send</button>
+
+<script>
+    const token = document.querySelector('meta[name="_csrf"]').content;
+    const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+    async function fetchData2() {
+    let messagesDiv = document.getElementById('messages');
+    let userMessage = document.createElement("p");
+
+    let messageInput = document.getElementById('message');
+    let message = messageInput.value;
+
+    userMessage.textContent = "You: " + message;
+    messagesDiv.appendChild(userMessage);
+
+
+    const element = document.querySelector('#messages')
+
+    const res = await fetch("/streams", {
+        method: 'POST',
+        headers:{
+            "header" : header,
+            "Content-Type": "application/json",
+            'X-CSRF-TOKEN': token,
+        },
+        body: JSON.stringify({
+                message: document.getElementById('message').value
+        })
+    });
+
+    const data = res.body;
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    let lastMessage = "";
+
+<!--   mod  -->
+    let newMessage = document.createElement("p");
+    element.appendChild(newMessage);
+<!--   mod  -->
+
+    while (!done && reader) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        lastMessage = lastMessage + chunkValue;
+
+        const text = lastMessage.replaceAll("data:", "").trim();
+<!--   mod  -->
+        newMessage.innerHTML = text;
+    }
+
+}
+    async function fetchData3() {
+    const element = document.querySelector('#messages')
+    const formData = new FormData();
+    formData.append("message", "너는 누구니?");
+
+    console.log(' *** BEFORE FETCH *** ');
+
+    const res = await fetch("/nonstreams", {
+        method: 'GET',
+<!--        body: formData-->
+    });
+
+    console.log(res);
+
+    console.log(' *** AFTER FETCH *** ');
+
+    const data = res.body;
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    let lastMessage = "";
+    while (!done && reader) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        lastMessage = lastMessage + chunkValue;
+
+        const text = lastMessage.replaceAll("data:", "").trim();
+        element.innerHTML = text;
+    }
+}
+</script>
+</body>
+</html>

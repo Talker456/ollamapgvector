@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<!--    <meta name="_csrf" th:content="${_csrf.token}">-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+    <title>AIAIAI</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/ai}" method="GET">
+        <div>
+            <label for="message">content</label>
+            <input type="text" name="message" id="message">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<div>
+    <h1 th:text="${response.text}"></h1>
+</div>
+</body>

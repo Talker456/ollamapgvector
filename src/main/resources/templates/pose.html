@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <form action="/search" method="get">
+                <div class="mb-3">
+                    <label for="message" class="form-label">Enter Text</label>
+                    <input type="text" class="form-control" id="message" name="message" placeholder="Type something here">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col" th:each="pose : ${poses}">
+            <div class="card" style="width: 18rem;">
+                <img th:src="${pose.photoUrl}" class="card-img-top" width="200px" height="200px">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${pose.name}">Card title</h5>
+                    <p class="card-text" th:text="${pose.description}"></p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<h1>Item List</h1>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Name</th>-->
+<!--        <th>Vector</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="pose : ${poses}">-->
+<!--        <td th:text="${pose.name}"></td>-->
+<!--        <td th:text="${pose.description}"></td>-->
+<!--        <td th:text="${pose.photoUrl}"></td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+</body>
+</html>
