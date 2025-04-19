@@ -22,7 +22,7 @@ public class SampleRestController {
     @GetMapping("/n-search")
     public String getn()
     {
-        String clientId = "bewF4M1meIqpLanmc4Ba"; //애플리케이션 클라이언트 아이디
+        String clientId = "CLIENT"; //애플리케이션 클라이언트 아이디
         String clientSecret = "SECRET"; //애플리케이션 클라이언트 시크릿
 
 
